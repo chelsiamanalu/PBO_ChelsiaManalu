@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2025 at 06:21 PM
+-- Generation Time: Jul 07, 2025 at 08:37 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -40,7 +40,11 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
 (1, 'lala', 'lala@gmail.com', '$2y$10$0PZjN299rJ1i3EjSmTBmkeZT/3bphspzzveO//ZyQIZzhcJOnMWLe'),
-(2, 'jevon', 'jevon@gmail.com', '$2y$10$bFzEzxiZB/EG2OP6OgmFdeODZvOyyIPKCgVPBNLIlnbxOIDT6v/WS');
+(2, 'jevon', 'jevon@gmail.com', '$2y$10$bFzEzxiZB/EG2OP6OgmFdeODZvOyyIPKCgVPBNLIlnbxOIDT6v/WS'),
+(3, 'chelsia', 'chelsiamanalu@gmail.com', '$2y$10$gNeuolSCYf5QPxThqSu/puuNJrBH5IdI30PkW7Oxr9Ht6lnYkJnhS'),
+(4, '123', 'falen@gmail.com', '$2y$10$Zl8R3nhKS7dgw1EO1TmM1uYBmnBT7V2rEcQ4k6IkzmlYG6AkTRuQK'),
+(5, 'falen', 'falentino@gmail.com', '$2y$10$1gAQA0lRLys9NlbjVflQUO7JwAefr.TGKmaajHmtAS9CS/SFf9LHS'),
+(6, 'ciko', 'chika@gmail.com', '$2y$10$1bAW/dCRDRe3UzgzX8IBxuczOGkl.f3XDm8BpbyvbxHAZAcW.oLp6');
 
 --
 -- Indexes for dumped tables
@@ -60,7 +64,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
