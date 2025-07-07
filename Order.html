@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shopping Cart Gabungan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #aad2f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .title {
+      font-size: 35px;
+      font-weight: 700;
+      color: #1f4a64;
+      margin: 40px 0 20px;
+    }
+
+    .order-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding-bottom: 100px;
+    }
+
+    .order-card {
+      background-color: #d9e9f2;
+      border-radius: 14px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      width: 400px;
+      height: auto;
+      margin: 10px 0;
+    }
+
+    .order-content {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .order-card img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 14px;
+    }
+
+    .order-text {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex: 1;
+      gap: 20px;
+    }
+
+    .order-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+    }
+
+    .item-name {
+      font-size: 13px;
+      color: #0f2e44;
+      margin: 0;
+    }
+
+    .item-price {
+      font-size: 13px;
+      font-weight: bold;
+      color: #0f2e44;
+      margin-top: 4px;
+    }
+
+    .status {
+      font-size: 14px;
+      font-weight: bold;
+      color: #0f2e44;
+      margin-top: 6px;
+    }
+
+    .status-buttons-fixed {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .status-btn {
+      background-color: #d9e9f2;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 600;
+      color: #0f2e44;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .status-btn.active {
+      background-color: #ffffff;
+    }
+
+    .order-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .details-btn {
+      padding: 6px 10px;
+      background-color: #ffffff;
+      color: #0f2e44;
+      font-size: 12px;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    .details-btn:hover {
+      background-color: #cbe5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="title">My Order</div>
+
+  <div id="order-list"></div>
+
+  <div class="status-buttons-fixed">
+    <button class="status-btn active">Order Made</button>
+    <button class="status-btn">Order OnTheWay</button>
+    <button class="status-btn">Order Completed</button>
+  </div>
+
+  <script>
+    const buttons = document.querySelectorAll(".status-btn");
+    const orderListContainer = document.getElementById("order-list");
+
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+    orders.forEach(o => {
+      if (!o.status) o.status = "Order Made";
+    });
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+    function renderOrders(status) {
+      orderListContainer.innerHTML = "";
+
+      const filtered = orders.filter(order => order.status === status);
+
+      if (filtered.length === 0) {
+        orderListContainer.innerHTML = "<p>Tidak ada pesanan dengan status ini.</p>";
+        return;
+      }
+
+      filtered.forEach((order, index) => {
+        const card = document.createElement("div");
+        card.className = "order-card";
+        card.innerHTML = `
+          <div class="order-content">
+            <img src="${order.image}" alt="${order.name}">
+            <div class="order-text">
+              <div class="order-info">
+                <p class="item-name">${order.name}</p>
+                <p class="item-price">Rp. ${parseInt(order.price).toLocaleString("id-ID")}</p>
+                <p class="status">${order.status}</p>
+              </div>
+              <div class="order-actions">
+                ${order.status === "Order Completed"
+                  ? `<a href="Details.html" class="details-btn">Order Details</a>`
+                  : generateStatusButton(order.status, index)
+                }
+              </div>
+            </div>
+          </div>
+        `;
+        orderListContainer.appendChild(card);
+      });
+
+      document.querySelectorAll(".change-status-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const index = parseInt(this.dataset.index);
+          changeStatus(index);
+        });
+      });
+    }
+
+    function generateStatusButton(status, index) {
+      let nextStatus = "";
+      if (status === "Order Made") nextStatus = "Order OnTheWay";
+      else if (status === "Order OnTheWay") nextStatus = "Order Completed";
+      else return "";
+
+      return `
+        <button class="change-status-btn" data-index="${index}" style="
+          padding: 6px 10px;
+          border: none;
+          border-radius: 8px;
+          background-color: #ffffff;
+          color: #0f2e44;
+          font-weight: bold;
+          cursor: pointer;
+        ">
+          ${nextStatus}
+        </button>
+      `;
+    }
+
+    function changeStatus(index) {
+      const filtered = orders.filter(o => o.status === currentStatus);
+      const realIndex = orders.findIndex(o => o === filtered[index]);
+      if (orders[realIndex].status === "Order Made") {
+        orders[realIndex].status = "Order OnTheWay";
+      } else if (orders[realIndex].status === "Order OnTheWay") {
+        orders[realIndex].status = "Order Completed";
+      }
+
+      localStorage.setItem("orders", JSON.stringify(orders));
+      renderOrders(currentStatus);
+    }
+
+    let currentStatus = "Order Made";
+    renderOrders(currentStatus);
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        buttons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        currentStatus = button.textContent.trim();
+        renderOrders(currentStatus);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Detail</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #aad2f5;
+      color: #1f4a64;
+      padding: 30px 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .info-section {
+      margin-bottom: 40px;
+    }
+
+    .info-row {
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .order-row .item-name {
+      flex: 2;
+    }
+
+    .order-row .qty {
+      flex: 1;
+      text-align: center;
+    }
+
+    .order-row .price {
+      flex: 1;
+      text-align: right;
+      font-weight: 600;
+    }
+
+    .bold {
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">Order Details</div>
+
+    <!-- Informasi Utama -->
+    <div class="info-section">
+      <div class="info-row">No. Pesanan: <span class="bold">#INV-20250707</span></div>
+      <div class="info-row">Total Pembayaran: <span class="bold">Rp. 85.000</span></div>
+      <div class="info-row">Waktu Pembayaran: <span class="bold">07 Juli 2025, 21:45</span></div>
+    </div>
+
+    <!-- Rincian -->
+    <div class="section-title">Rincian Pesanan</div>
+
+    <div class="order-row">
+      <div class="item-name bold">Boneka Beruang Teddy</div>
+      <div class="qty bold">x1</div>
+      <div class="price">Rp. 85.000</div>
+    </div>
+
+    <div class="order-row">
+      <div class="item-name bold">Biaya Penanganan</div>
+      <div class="qty"></div>
+      <div class="price">Rp. 0</div>
+    </div>
+
+    <div class="order-row bold">
+      <div class="item-name">Total Pembayaran</div>
+      <div class="qty"></div>
+      <div class="price">Rp. 85.000</div>
+    </div>
+  </div>
+</body>
+</html>

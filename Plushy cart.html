@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shopping Cart Gabungan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #aad2f5;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 460px;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+      padding-bottom: 120px;
+    }
+
+    h2 {
+      color: #1f4a64;
+      font-size: 35px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .cart-item {
+      background-color: #d1e8f5;
+      border-radius: 16px;
+      padding: 10px 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cart-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-right: 12px;
+    }
+
+    .item-info {
+      flex: 1;
+    }
+
+    .item-name {
+      font-size: 14px;
+      font-weight: bold;
+      color: #1f4a64;
+    }
+
+    .item-price {
+      font-size: 14px;
+      color: #1f4a64;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .controls button {
+      background: none;
+      border: none;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #1e2f3d;
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .remove-btn i {
+      color: #1f4a64;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 68px;
+      left: 0;
+      right: 0;
+      background-color: transparent;
+      padding: 10px 20px;
+      box-shadow: none;
+      z-index: 999;
+    }
+
+    .footer-bar {
+      max-width: 460px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .select-all {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      gap: 6px;
+      color: #1e2f3d;
+    }
+
+    .summary {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background-color: rgba(255, 255, 255, 0.4);
+      padding: 6px 12px;
+      border-radius: 12px;
+    }
+
+    .total {
+      font-size: 14px;
+      color: #1e2f3d;
+    }
+
+    .order-btn {
+      background-color: rgba(255, 255, 255, 0.6);
+      padding: 4px 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      color: #1e2f3d;
+      border: none;
+      cursor: pointer;
+    }
+
+    .order-btn:hover {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .order-btn:active {
+      background-color: #84b3d4;
+      transform: scale(0.98);
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 0;
+      background: #e3f0fc;
+      width: 400px;
+      max-width: 90%;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 68px;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    }
+
+    .bottom-nav i {
+      font-size: 24px;
+      color: #265d7e;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .notification-wrapper {
+      position: relative;
+    }
+
+    .notification-dot {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 10px;
+      height: 10px;
+      background: rgb(243, 52, 52);
+      border-radius: 50%;
+      display: block;
+    }
+
+    #notification-popup {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 16px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      font-size: 14px;
+      width: 260px;
+      z-index: 1001;
+    }
+
+    #notification-popup.hidden {
+      display: none;
+    }
+
+    #notification-popup h4 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      color: #10374d;
+    }
+
+    #notification-popup ul {
+      padding-left: 18px;
+      margin: 0;
+    }
+
+    #notification-popup li {
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    .nav-link i {
+      color: #24506e;
+      transition: color 0.3s;
+    }
+
+    .nav-link.active i {
+      color: #0f172a;
+    }
+
+    .bottom-nav a i {
+  color: #1f4d66; /* Warna default */
+  transition: color 0.2s ease;
+}
+
+.bottom-nav a:hover i,
+.bottom-nav a:focus i,
+.bottom-nav a:active i {
+  color: #0f2e44; /* Warna saat disentuh atau diklik */
+}
+
+.order-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  gap: 20px;
+}
+
+.order-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Shopping Cart</h2>
+    <div id="cart-items"></div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-bar">
+      <label class="select-all">
+        <input type="checkbox" id="selectAll" onchange="toggleAll()"> Semua
+      </label>
+      <div class="summary">
+        <div class="total" id="totalText">Total Rp0</div>
+        <button class="order-btn" id="orderBtn">Order (0)</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="notification-popup" class="hidden">
+    <h4>Notifikasi</h4>
+    <ul>
+      <li>Pesanan #1234 telah dibayar</li>
+      <li>Pesanan #1235 menunggu konfirmasi</li>
+      <li>Pesanan #1236 sedang dikirim</li>
+    </ul>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="Plushy beranda.html"><i class="fas fa-home active" id="home-icon"></i></a>
+    <a><i class="fas fa-shopping-cart" id="cart-icon"></i></a>
+    <div class="notification-wrapper" onclick="toggleNotifikasi()">
+      <a href="#"><i class="fas fa-bell"></i></a>
+      <span class="notification-dot" id="notification-dot"></span>
+    </div>
+  <a href="#" id="logout-link">
+  <i class="fas fa-share-square" id="logout-icon"></i>
+</a>
+  </div>
+
+<script>
+function loadCart() {
+  const cartContainer = document.getElementById("cart-items");
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  cartContainer.innerHTML = "";
+
+  cart.forEach((item, index) => {
+    const card = document.createElement("div");
+    card.className = "cart-item";
+    card.innerHTML = `
+  <div class="order-content">
+    <img src="${order.image}" alt="${order.name}">
+    <div class="order-text">
+      <div class="order-info">
+        <p class="item-name">${order.name}</p>
+        <p class="item-price">Rp. ${parseInt(order.price).toLocaleString("id-ID")}</p>
+        <p class="status">${order.status}</p>
+      </div>
+      <div class="order-actions">
+        ${order.status === "Order Completed" ? `<a href="Details.html" class="details-btn">Order Details</a>` : ""}
+        ${generateStatusButton(order.status, index)}
+      </div>
+    </div>
+  </div>
+      <div class="controls">
+        <input type="checkbox" class="item-checkbox" data-index="${index}" onchange="updateTotal()">
+        <button onclick="changeQty(${index}, -1)">−</button>
+        <span id="qty-${index}">${item.quantity}</span>
+        <button onclick="changeQty(${index}, 1)">+</button>
+        <button onclick="removeItem(${index})" class="remove-btn">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    `;
+    cartContainer.appendChild(card);
+  });
+
+  updateTotal();
+}
+
+function updateTotal() {
+  let total = 0;
+  let totalQty = 0;
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  document.querySelectorAll(".item-checkbox").forEach(cb => {
+    if (cb.checked) {
+      const i = parseInt(cb.dataset.index);
+      total += cart[i].price * cart[i].quantity;
+      totalQty += cart[i].quantity;
+    }
+  });
+
+  document.getElementById("totalText").textContent = `Total Rp${total.toLocaleString("id-ID")}`;
+  document.getElementById("orderBtn").textContent = `Order (${totalQty})`;
+}
+
+// ✅ Tambahan agar tombol plus-minus dan hapus berfungsi
+function changeQty(index, delta) {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart[index].quantity += delta;
+
+  if (cart[index].quantity < 1) {
+    cart.splice(index, 1); // hapus item jika qty < 1
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  loadCart();
+}
+
+function removeItem(index) {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  loadCart();
+}
+
+// ✅ Tombol ORDER yang kirim ke halaman My Order
+document.getElementById("orderBtn").addEventListener("click", function () {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const selectedIndexes = Array.from(document.querySelectorAll(".item-checkbox"))
+    .map(cb => cb.checked ? parseInt(cb.dataset.index) : -1)
+    .filter(index => index !== -1);
+
+  if (selectedIndexes.length > 0) {
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+    selectedIndexes.sort((a, b) => b - a).forEach(index => {
+      const item = cart[index];
+      orders.push({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        image: item.image,
+        status: "Order Made"
+      });
+      cart.splice(index, 1);
+    });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("orders", JSON.stringify(orders));
+    window.location.href = "Order.html"; // arahkan ke halaman My Order
+  }
+});
+
+window.onload = loadCart;
+</script>
+</body>
+</html>
